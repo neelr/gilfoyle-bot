@@ -5,6 +5,7 @@ import mlx.nn as nn
 import sqlite3
 import subprocess
 from mlx_lm import load, generate
+from utils import linear_to_lora_layers
 
 def send_imessage(number, text):
     """
@@ -63,17 +64,17 @@ def fetch_past_messages(cursor, handle_id, limit=10):
     """, (handle_id, limit))
     return [item[0] for item in cursor.fetchall()][::-1]
 
-def gen_text(inp):
-    return generate(
-        model=model,
-        tokenizer=tokenizer,
-        temp=0.8,
-        max_tokens=500,
-        prompt=f"<s>[INST]{inp}[/INST]",
-    )
 
 def main():
     model, tokenizer = load("mlx_model")
+    def gen_text(inp):
+        return generate(
+            model=model,
+            tokenizer=tokenizer,
+            temp=0.8,
+            max_tokens=500,
+            prompt=f"<s>[INST]{inp}[/INST]",
+        )
     # Convert linear layers to lora layers and unfreeze in the process
     linear_to_lora_layers(model, 4)
     model.load_weights("adapters.npz", strict=False)

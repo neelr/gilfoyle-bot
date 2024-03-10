@@ -101,8 +101,6 @@ def train(model, train_set, optimizer, loss, tokenizer, args):
     ):
         # Forward and backward pass
         (lvalue, toks), grad = loss_value_and_grad(model, *batch)
-
-        print(f"iter {it + 1}, loss {lvalue.item():.3f}")
         # Model update
         optimizer.update(model, grad)
         mx.eval(model.parameters(), optimizer.state, lvalue)
@@ -112,7 +110,7 @@ def train(model, train_set, optimizer, loss, tokenizer, args):
         n_tokens += toks.item()
 
         # Report training loss if needed
-        if it % args["steps_per_report"] == 0:
+        if (it+1) % args["steps_per_report"] == 0:
             train_loss = np.mean(losses)
 
             stop = time.perf_counter()
@@ -152,7 +150,7 @@ def main():
     # Train model
     train(model, train_set, opt, loss, tokenizer, {
         "iters": 1000,
-        "batch_size": 8,
+        "batch_size": 1,
         "steps_per_report": 10,
         "save_every": 100,
         "adapter_file": "adapters.npz",
