@@ -208,7 +208,7 @@ def convert_jsonl_format(input_file, output_file):
             outfile.write(json_record + '\n')
 
 
-def export():
+def main():
     db_path = '~/Library/Messages/chat.db'
     output_file = 'train.jsonl'
 
@@ -235,4 +235,4 @@ def export():
 
 
 if __name__ == "__main__":
-    export()
+    main()

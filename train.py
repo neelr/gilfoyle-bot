@@ -5,14 +5,14 @@ import json
 import math
 import time
 from pathlib import Path
-
 import mlx.core as mx
 import mlx.nn as nn
 import mlx.optimizers as optim
 import numpy as np
 import utils as lora_utils
-from mlx.utils import tree_flatten, tree_unflatten, LoraLinear
+from mlx.utils import tree_flatten, tree_unflatten
 
+LoRALinear = lora_utils.LoRALinear
 
 class Dataset:
     """
@@ -128,7 +128,7 @@ def train(model, train_set, optimizer, loss, tokenizer, args):
              dict(tree_flatten(model.trainable_parameters())))
 
 
-def finetune():
+def main():
     model, tokenizer, _ = lora_utils.load("mlx_model")
 
     # Freeze all layers other than LORA linears
@@ -164,4 +164,4 @@ def finetune():
 
 
 if __name__ == "__main__":
-    finetune()
+    main()
