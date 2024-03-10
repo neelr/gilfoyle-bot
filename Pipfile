@@ -6,6 +6,11 @@ name = "pypi"
 [packages]
 pytorch = "*"
 transformers = "*"
+mlx = "*"
+tqdm = "*"
+numpy = "*"
+pandas = "*"
+mlx_lm = "*"
 
 [dev-packages]
 
