@@ -1,0 +1,7 @@
+mlx_model
+adapters.npz
+.ipynb_checkpoints
+__pycache__
+test.jsonl
+train.jsonl
+train_new_format.jsonl
