@@ -122,11 +122,11 @@ def train(model, train_set, optimizer, loss, tokenizer, args):
             losses = []
             n_tokens = 0
             start = time.perf_counter()
-            mx.savez("adapters.npz", **
-             dict(tree_flatten(model.trainable_parameters())))
+        if (it+1) % args["save_every"] == 0:
+            mx.savez("adapters.npz", **dict(tree_flatten(model.trainable_parameters())))
 
 
-def main():
+def main(iters):
     model, tokenizer, _ = lora_utils.load("mlx_model")
 
     # Freeze all layers other than LORA linears
@@ -144,15 +144,15 @@ def main():
 
     train_set, test_set = load()
 
-    opt = optim.Adam(learning_rate=0.01)
+    opt = optim.Adam(learning_rate=2e-5)
 
     print("Starting training...")
     # Train model
     train(model, train_set, opt, loss, tokenizer, {
-        "iters": 1000,
-        "batch_size": 1,
+        "iters": iters,
+        "batch_size": 2,
         "steps_per_report": 10,
-        "save_every": 100,
+        "save_every": 15,
         "adapter_file": "adapters.npz",
     })
 
@@ -162,4 +162,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(3000)

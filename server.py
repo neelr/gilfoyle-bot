@@ -95,6 +95,7 @@ def main():
             # Fetch any new messages
             new_messages = fetch_new_messages(cursor, last_id)
             if new_messages:
+                print(f"New messages: {new_messages}")
                 for msg in new_messages:
                     rowid, handle_id, text = msg
                     if text is not None:
